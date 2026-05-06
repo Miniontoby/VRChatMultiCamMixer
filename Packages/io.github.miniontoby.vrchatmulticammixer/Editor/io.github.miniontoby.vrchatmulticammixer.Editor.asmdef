@@ -1,0 +1,20 @@
+{
+    "name": "io.github.miniontoby.vrchatmulticammixer.Editor",
+    "rootNamespace": "io.github.miniontoby.vrchatmulticammixer",
+    "references": [
+        "VRC.SDK3",
+        "VRC.SDK3.Editor",
+        "VRC.SDKBase",
+        "VRC.SDKBase.Editor",
+        "io.github.miniontoby.vrchatmulticammixer"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
