@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0adae93375f5d5840a30b6e47f324172, type: 3}
   m_Name: PackageMakerWindowData
   m_EditorClassIdentifier: 
-  targetAssetFolder: Assets
+  targetAssetFolder: 
   packageID: io.github.miniontoby.vrchatmulticammixer
   authorName: Miniontoby
   authorEmail: 

@@ -113,7 +113,7 @@ namespace VRC.PackageManagement.Resolver
         public static void CreateManifest()
         {
             VPMProjectManifest.Load(ProjectDir);
-            ResolverWindow.Refresh().ConfigureAwait(false);
+            ResolverWindow.Refresh();
         }
         
         public static void ResolveManifest()
@@ -189,7 +189,10 @@ namespace VRC.PackageManagement.Resolver
         
         public static void ForceRefresh ()
         {
-            UnityEditor.PackageManager.Client.Resolve();
+            MethodInfo method = typeof( UnityEditor.PackageManager.Client ).GetMethod( "Resolve", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.DeclaredOnly );
+            if( method != null )
+                method.Invoke( null, null );
+
             AssetDatabase.Refresh();
         }
 

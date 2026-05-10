@@ -1,7 +1,6 @@
 ﻿.unity-box {
-    margin: 2px;
-    padding: 10px;
-    flex-shrink: 0;
+    margin: 10px;
+    padding:10px;
 }
 
 .unity-box #description {
