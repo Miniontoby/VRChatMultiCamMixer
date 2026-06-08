@@ -14,7 +14,9 @@ public class TripodController : UdonSharpBehaviour
     [SerializeField] private Transform cameraPivot;   
 
     [Tooltip("The transform that will be rotated")]
-    [SerializeField] private Transform gripResetPoint;    
+    [SerializeField] private Transform gripResetPoint;
+
+    [SerializeField] private CameraComponent cameraComponent;
 
     [Header("Settings")]
     [Tooltip("Smoothing factor for syncing to prevent jitter")]
@@ -23,12 +25,21 @@ public class TripodController : UdonSharpBehaviour
     [Tooltip("Rotation offset if needed")]
     [SerializeField] private Vector3 rotationOffsetEuler = new Vector3(0, -90, 0); //90 by default because it's sideways otherwise
 
+
     //Networked Rotation
     [UdonSynced] private Quaternion syncedRotation;
 
     private bool isHeld = false;
     private Rigidbody pickupRigidbody;
     private Quaternion rotationCorrection;
+
+    private void SetOwnerIfNotOwnerYet(GameObject gameObject)
+    {
+        if (!Networking.IsOwner(gameObject))
+        {
+            Networking.SetOwner(Networking.LocalPlayer, gameObject);
+        }
+    }
 
     void Start()
     {
@@ -83,23 +94,19 @@ public class TripodController : UdonSharpBehaviour
 
     public override void OnPickup()
     {
-        if (!Networking.IsOwner(gameObject))
-        {
-            Networking.SetOwner(Networking.LocalPlayer, gameObject);
-        }
+        SetOwnerIfNotOwnerYet(gameObject);
+        cameraComponent.OnPickup();
         isHeld = true;
     }
 
     public override void OnDrop()
     {
         isHeld = false;
+        cameraComponent.OnDrop();
 
         if (pickupHandTarget != null && gripResetPoint != null)
         {
-            if (!Networking.IsOwner(pickupHandTarget.gameObject))
-            {
-                Networking.SetOwner(Networking.LocalPlayer, pickupHandTarget.gameObject);
-            }
+            SetOwnerIfNotOwnerYet(pickupHandTarget.gameObject);
             pickupHandTarget.transform.position = gripResetPoint.position;
             pickupHandTarget.transform.rotation = gripResetPoint.rotation;
 

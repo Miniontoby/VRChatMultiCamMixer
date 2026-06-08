@@ -2117,7 +2117,7 @@ GameObject:
   - component: {fileID: 6382379404283432235}
   - component: {fileID: 6432504410201492384}
   m_Layer: 0
-  m_Name: Mixer
+  m_Name: AtemMiniExtreme Mixer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

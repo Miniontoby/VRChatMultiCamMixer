@@ -199,7 +199,7 @@ PrefabInstance:
     - target: {fileID: 3274222552991851965, guid: e090bbf65d8e64a4fadcb1a669a5d976,
         type: 3}
       propertyPath: m_Name
-      value: Mixer
+      value: AtemMiniExtreme Mixer
       objectReference: {fileID: 0}
     - target: {fileID: 3395107781259455131, guid: e090bbf65d8e64a4fadcb1a669a5d976,
         type: 3}
@@ -354,27 +354,32 @@ PrefabInstance:
         type: 3}
       propertyPath: input1
       value: 
-      objectReference: {fileID: 1181413251}
+      objectReference: {fileID: 906908516}
     - target: {fileID: 6382379404283432235, guid: e090bbf65d8e64a4fadcb1a669a5d976,
         type: 3}
       propertyPath: input2
       value: 
-      objectReference: {fileID: 672361347}
+      objectReference: {fileID: 1596499565}
     - target: {fileID: 6382379404283432235, guid: e090bbf65d8e64a4fadcb1a669a5d976,
         type: 3}
       propertyPath: input3
       value: 
-      objectReference: {fileID: 1224244495}
+      objectReference: {fileID: 1181413251}
     - target: {fileID: 6382379404283432235, guid: e090bbf65d8e64a4fadcb1a669a5d976,
         type: 3}
       propertyPath: input4
       value: 
-      objectReference: {fileID: 2025367933}
+      objectReference: {fileID: 672361347}
     - target: {fileID: 6382379404283432235, guid: e090bbf65d8e64a4fadcb1a669a5d976,
         type: 3}
       propertyPath: input5
       value: 
-      objectReference: {fileID: 1596499565}
+      objectReference: {fileID: 1224244495}
+    - target: {fileID: 6382379404283432235, guid: e090bbf65d8e64a4fadcb1a669a5d976,
+        type: 3}
+      propertyPath: input6
+      value: 
+      objectReference: {fileID: 2025367933}
     - target: {fileID: 6382379404283432235, guid: e090bbf65d8e64a4fadcb1a669a5d976,
         type: 3}
       propertyPath: serializationData.Prefab
@@ -679,7 +684,7 @@ PrefabInstance:
     - target: {fileID: 2862447701416280466, guid: 1f621ca59ec400c4298107d8515eb7bd,
         type: 3}
       propertyPath: m_Name
-      value: HandHeldCamera 2
+      value: HandHeldCamera 4
       objectReference: {fileID: 0}
     - target: {fileID: 3516942516050499711, guid: 1f621ca59ec400c4298107d8515eb7bd,
         type: 3}
@@ -710,6 +715,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31c7a1109e09890449b1cfcd8876b5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &880311317 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2862447701416280466, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+    type: 3}
+  m_PrefabInstance: {fileID: 906908515}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &884175447 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2862447701416280466, guid: 89b6a0aa51acdfd42a504fb25f8adf86,
@@ -722,6 +733,92 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 94654257}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &906908515
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2570570659701533808, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0080935955
+      objectReference: {fileID: 0}
+    - target: {fileID: 2570570659701533808, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.2623537
+      objectReference: {fileID: 0}
+    - target: {fileID: 2570570659701533808, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.464718
+      objectReference: {fileID: 0}
+    - target: {fileID: 2570570659701533808, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99144495
+      objectReference: {fileID: 0}
+    - target: {fileID: 2570570659701533808, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.13052596
+      objectReference: {fileID: 0}
+    - target: {fileID: 2570570659701533808, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2570570659701533808, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2570570659701533808, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2570570659701533808, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2570570659701533808, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2862447701416280466, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+      propertyPath: m_Name
+      value: StaticCamera 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784488436574912134, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 7784488436574912134, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+        type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14a1c1a441a4bd14d9eb659610b29b0a, type: 3}
+--- !u!114 &906908516 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7784488436574912134, guid: 14a1c1a441a4bd14d9eb659610b29b0a,
+    type: 3}
+  m_PrefabInstance: {fileID: 906908515}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880311317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31c7a1109e09890449b1cfcd8876b5bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1069902874
 GameObject:
   m_ObjectHideFlags: 0
@@ -910,7 +1007,7 @@ PrefabInstance:
     - target: {fileID: 2862447701416280466, guid: 1f621ca59ec400c4298107d8515eb7bd,
         type: 3}
       propertyPath: m_Name
-      value: HandHeldCamera 1
+      value: HandHeldCamera 3
       objectReference: {fileID: 0}
     - target: {fileID: 3516942516050499711, guid: 1f621ca59ec400c4298107d8515eb7bd,
         type: 3}
@@ -1025,7 +1122,7 @@ PrefabInstance:
     - target: {fileID: 2862447701416280466, guid: 1f621ca59ec400c4298107d8515eb7bd,
         type: 3}
       propertyPath: m_Name
-      value: HandHeldCamera 3
+      value: HandHeldCamera 5
       objectReference: {fileID: 0}
     - target: {fileID: 3516942516050499711, guid: 1f621ca59ec400c4298107d8515eb7bd,
         type: 3}
@@ -1134,13 +1231,36 @@ PrefabInstance:
     - target: {fileID: 2862447701416280466, guid: 89b6a0aa51acdfd42a504fb25f8adf86,
         type: 3}
       propertyPath: m_Name
-      value: TripodCamera 5
+      value: TripodCamera 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3694739315128623667, guid: 89b6a0aa51acdfd42a504fb25f8adf86,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 3694739315128623667, guid: 89b6a0aa51acdfd42a504fb25f8adf86,
+        type: 3}
+    - target: {fileID: 3987071715529915565, guid: 89b6a0aa51acdfd42a504fb25f8adf86,
+        type: 3}
+      propertyPath: _syncMethod
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5916275047267764521, guid: 89b6a0aa51acdfd42a504fb25f8adf86,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 5916275047267764521, guid: 89b6a0aa51acdfd42a504fb25f8adf86,
+        type: 3}
+    - target: {fileID: 6438434788871824787, guid: 89b6a0aa51acdfd42a504fb25f8adf86,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: a905d464e2187a947bc1484359199fa8,
+        type: 2}
+    - target: {fileID: 7006843779394435753, guid: 89b6a0aa51acdfd42a504fb25f8adf86,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 7006843779394435753, guid: 89b6a0aa51acdfd42a504fb25f8adf86,
         type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1176,6 +1296,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7724027369037492550, guid: e090bbf65d8e64a4fadcb1a669a5d976,
     type: 3}
   m_PrefabInstance: {fileID: 94654257}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1757151141 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 245332478338283295, guid: 89b6a0aa51acdfd42a504fb25f8adf86,
+    type: 3}
+  m_PrefabInstance: {fileID: 1596499564}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1787983409
 GameObject:
@@ -1271,6 +1397,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 55, y: 125, z: 100}
+--- !u!1 &1868637960 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8731603206114479324, guid: 89b6a0aa51acdfd42a504fb25f8adf86,
+    type: 3}
+  m_PrefabInstance: {fileID: 1596499564}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1900856249 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2862447701416280466, guid: 1f621ca59ec400c4298107d8515eb7bd,
@@ -1367,7 +1499,7 @@ PrefabInstance:
     - target: {fileID: 2862447701416280466, guid: 1f621ca59ec400c4298107d8515eb7bd,
         type: 3}
       propertyPath: m_Name
-      value: HandHeldCamera 4
+      value: HandHeldCamera 6
       objectReference: {fileID: 0}
     - target: {fileID: 3516942516050499711, guid: 1f621ca59ec400c4298107d8515eb7bd,
         type: 3}
@@ -1741,6 +1873,19 @@ MonoBehaviour:
     SerializedTypeNames:
     - VRC.SDK3.Components.VRCPickup
     - VRC.SDK3.Components.VRCObjectSync
+  - gameObject: {fileID: 1868637960}
+    ID: 39
+    SerializedTypeNames:
+    - VRC.Udon.UdonBehaviour
+  - gameObject: {fileID: 1757151141}
+    ID: 40
+    SerializedTypeNames:
+    - VRC.SDK3.Components.VRCPickup
+    - VRC.Udon.UdonBehaviour
+  - gameObject: {fileID: 880311317}
+    ID: 41
+    SerializedTypeNames:
+    - VRC.Udon.UdonBehaviour
   portraitCameraPositionOffset: {x: 0, y: 0, z: 0}
   portraitCameraRotationOffset: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   PlayerPersistence: []
@@ -1861,8 +2006,9 @@ SceneRoots:
   - {fileID: 7606902903243430487}
   - {fileID: 358170790}
   - {fileID: 94654257}
+  - {fileID: 906908515}
+  - {fileID: 1596499564}
   - {fileID: 1181413250}
   - {fileID: 672361346}
   - {fileID: 1224244494}
   - {fileID: 2025367932}
-  - {fileID: 1596499564}

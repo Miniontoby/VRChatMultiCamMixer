@@ -6,10 +6,9 @@ using UnityEngine.UI;
 [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
 public class MixerLogicScript : UdonSharpBehaviour
 {
-    private Color ColorDimGray { get; } = new Color(0.1568f, 0.1568f, 0.1568f, 1f); // 40, 40, 40
+	private Color ColorDimGray { get; } = new Color(0.1568f, 0.1568f, 0.1568f, 1f); // 40, 40, 40
 
-
-    [Header("Inputs")]
+	[Header("Inputs")]
 	[SerializeField] private CameraComponent input1 = null;
 	[SerializeField] private CameraComponent input2 = null;
 	[SerializeField] private CameraComponent input3 = null;
@@ -20,11 +19,11 @@ public class MixerLogicScript : UdonSharpBehaviour
 	[SerializeField] private CameraComponent input8 = null;
 
 	[Header("Internal")]
-    [SerializeField] private RenderTexture internalRenderTexture;
-    [SerializeField] private RenderTexture internalFallbackRenderTexture;
-    [SerializeField] private Camera internalProgramCamera;
+	[SerializeField] private RenderTexture internalRenderTexture;
+	[SerializeField] private RenderTexture internalFallbackRenderTexture;
+	[SerializeField] private Camera internalProgramCamera;
 
-    [SerializeField] private Button internalInput1Button;
+	[SerializeField] private Button internalInput1Button;
 	[SerializeField] private Button internalInput2Button;
 	[SerializeField] private Button internalInput3Button;
 	[SerializeField] private Button internalInput4Button;
@@ -64,7 +63,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 			Button currentProgramInput = GetButton(_currentProgram);
 			if (currentProgramInput != null)
 			{
-                CinemachineVirtualCamera currentProgramCamera = GetVirtualCamera(_currentProgram);
+				CinemachineVirtualCamera currentProgramCamera = GetVirtualCamera(_currentProgram);
 				if (currentProgramCamera != null)
 				{
 					currentProgramCamera.gameObject.SetActive(false);
@@ -79,7 +78,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 			Button newProgramInput = GetButton(value);
 			if (newProgramInput != null)
 			{
-                CinemachineVirtualCamera newProgramCamera = GetVirtualCamera(value);
+				CinemachineVirtualCamera newProgramCamera = GetVirtualCamera(value);
 				if (newProgramCamera != null)
 				{
 					_currentProgram = (byte)value;
@@ -124,51 +123,50 @@ public class MixerLogicScript : UdonSharpBehaviour
 		get => (MixerStateEnum)_currentPreview;
 	}
 
+	// This is a local setting
+	private MixerStateEnum _currentDisplayed;
+	public MixerStateEnum CurrentDisplayed
+	{
+		set
+		{
+			OutlinedButtonComponent currentButton = GetButton(_currentDisplayed, true);
+			if (currentButton != null)
+			{
+				currentButton.text.color = currentButton.outline.color = Color.gray;
+				CameraComponent currentCameraComponent = GetCameraComponent(_currentDisplayed);
+				if (currentCameraComponent != null && currentCameraComponent.virtualCamera != null)
+				{
+					currentCameraComponent.previewCamera.gameObject.SetActive(false);
+					currentCameraComponent.previewCamera.targetTexture = null;
+				}
+				else if (_currentDisplayed == MixerStateEnum.OutputClean)
+				{
+					// TODO
+				}
+				else if (_currentDisplayed == MixerStateEnum.OutputPVR)
+				{
+					// TODO
+				}
+				else if (_currentDisplayed == MixerStateEnum.OutputMV)
+				{
+					// TODO
+				}
+				else if (_currentDisplayed == MixerStateEnum.OutputPGM)
+				{
+					internalProgramCamera.targetTexture = internalFallbackRenderTexture;
+				}
+			}
 
-    // This is a local setting
-    private MixerStateEnum _currentDisplayed;
-    public MixerStateEnum CurrentDisplayed
-    {
-        set
-        {
-            OutlinedButtonComponent currentButton = GetButton(_currentDisplayed, true);
-            if (currentButton != null)
-            {
-                currentButton.text.color = currentButton.outline.color = Color.gray;
-                CameraComponent currentCameraComponent = GetCameraComponent(_currentDisplayed);
-                if (currentCameraComponent != null && currentCameraComponent.virtualCamera != null)
-                {
-                    currentCameraComponent.previewCamera.gameObject.SetActive(false);
-                    currentCameraComponent.previewCamera.targetTexture = null;
-                }
-                else if (_currentDisplayed == MixerStateEnum.OutputClean)
-                {
-                    // TODO
-                }
-                else if (_currentDisplayed == MixerStateEnum.OutputPVR)
-                {
-                    // TODO
-                }
-                else if (_currentDisplayed == MixerStateEnum.OutputMV)
-                {
-                    // TODO
-                }
-                else if (_currentDisplayed == MixerStateEnum.OutputPGM)
-                {
-                    internalProgramCamera.targetTexture = internalFallbackRenderTexture;
-                }
-            }
-
-            OutlinedButtonComponent newButton = GetButton(value, true);
+			OutlinedButtonComponent newButton = GetButton(value, true);
 			if (newButton != null)
 			{
-                CameraComponent cameraComponent = GetCameraComponent(value);
-                if (cameraComponent != null && cameraComponent.virtualCamera != null)
-                {
-                    cameraComponent.previewCamera.targetTexture = internalRenderTexture;
-                    cameraComponent.previewCamera.gameObject.SetActive(true);
-                }
-                else if (value == MixerStateEnum.OutputClean)
+				CameraComponent cameraComponent = GetCameraComponent(value);
+				if (cameraComponent != null && cameraComponent.virtualCamera != null)
+				{
+					cameraComponent.previewCamera.targetTexture = internalRenderTexture;
+					cameraComponent.previewCamera.gameObject.SetActive(true);
+				}
+				else if (value == MixerStateEnum.OutputClean)
 				{
 					// TODO
 				}
@@ -187,35 +185,41 @@ public class MixerLogicScript : UdonSharpBehaviour
 				else
 				{
 					return;
-                }
-                newButton.text.color = newButton.outline.color = Color.white;
-            }
+				}
+				newButton.text.color = newButton.outline.color = Color.white;
+			}
 			_currentDisplayed = value;
-        }
-        get => _currentDisplayed;
-    }
+		}
+		get => _currentDisplayed;
+	}
 
-    void Start()
+	private void InitializeInput(byte currentIndex)
 	{
+		Button inputButton = GetButton(currentIndex);
+		if (inputButton != null)
+		{
+			bool hasVirtualCamera = GetVirtualCamera(currentIndex) != null || currentIndex > (byte)MixerStateEnum.Input8;
+			inputButton.enabled = hasVirtualCamera;
+			inputButton.image.color = hasVirtualCamera ? Color.white : Color.gray;
+		}
+
+		OutlinedButtonComponent outputButton = GetButton(currentIndex, true);
+		if (outputButton != null)
+		{
+			outputButton.text.color = outputButton.outline.color = Color.gray;
+		}
+	}
+
+	void Start()
+	{
+		// Unsure if for loops are the best way to do stuff in udon sharp...
 		for (byte currentIndex = (byte)MixerStateEnum.Input1; currentIndex <= (byte)MixerStateEnum.OutputPGM; currentIndex++)
 		{
-            Button inputButton = GetButton(currentIndex);
-			if (inputButton != null)
-			{
-				bool hasVirtualCamera = GetVirtualCamera(currentIndex) != null || currentIndex > (byte)MixerStateEnum.Input8;
-				inputButton.enabled = hasVirtualCamera;
-                inputButton.image.color = hasVirtualCamera ? Color.white : Color.gray;
-            }
-
-            OutlinedButtonComponent outputButton = GetButton(currentIndex, true);
-            if (outputButton != null)
-            {
-                outputButton.text.color = outputButton.outline.color = Color.gray;
-            }
-        }
+			InitializeInput(currentIndex);
+		}
 
 		CurrentDisplayed = MixerStateEnum.OutputPGM;
-    }
+	}
 
 
 	#region Custom Event Listeners
@@ -226,9 +230,9 @@ public class MixerLogicScript : UdonSharpBehaviour
 			CurrentPreview = MixerStateEnum.Input1;
 			RequestSerialization();
 		}
-    }
+	}
 
-    public void OnButtonInput2Clicked()
+	public void OnButtonInput2Clicked()
 	{
 		if (input2 != null)
 		{
@@ -237,16 +241,16 @@ public class MixerLogicScript : UdonSharpBehaviour
 		}
 	}
 
-    public void OnButtonInput3Clicked()
+	public void OnButtonInput3Clicked()
 	{
 		if (input3 != null)
 		{
 			CurrentPreview = MixerStateEnum.Input3;
 			RequestSerialization();
 		}
-    }
+	}
 
-    public void OnButtonInput4Clicked()
+	public void OnButtonInput4Clicked()
 	{
 		if (input4 != null)
 		{
@@ -328,91 +332,91 @@ public class MixerLogicScript : UdonSharpBehaviour
 	}
 
 
-    public void OnButtonOutput1Clicked()
-    {
-        if (input1 != null)
-        {
-            CurrentDisplayed = MixerStateEnum.Input1;
-        }
-    }
+	public void OnButtonOutput1Clicked()
+	{
+		if (input1 != null)
+		{
+			CurrentDisplayed = MixerStateEnum.Input1;
+		}
+	}
 
-    public void OnButtonOutput2Clicked()
-    {
-        if (input2 != null)
-        {
-            CurrentDisplayed = MixerStateEnum.Input2;
-        }
-    }
+	public void OnButtonOutput2Clicked()
+	{
+		if (input2 != null)
+		{
+			CurrentDisplayed = MixerStateEnum.Input2;
+		}
+	}
 
-    public void OnButtonOutput3Clicked()
-    {
-        if (input3 != null)
-        {
-            CurrentDisplayed = MixerStateEnum.Input3;
-        }
-    }
+	public void OnButtonOutput3Clicked()
+	{
+		if (input3 != null)
+		{
+			CurrentDisplayed = MixerStateEnum.Input3;
+		}
+	}
 
-    public void OnButtonOutput4Clicked()
-    {
-        if (input4 != null)
-        {
-            CurrentDisplayed = MixerStateEnum.Input4;
-        }
-    }
+	public void OnButtonOutput4Clicked()
+	{
+		if (input4 != null)
+		{
+			CurrentDisplayed = MixerStateEnum.Input4;
+		}
+	}
 
-    public void OnButtonOutput5Clicked()
-    {
-        if (input5 != null)
-        {
-            CurrentDisplayed = MixerStateEnum.Input5;
-        }
-    }
+	public void OnButtonOutput5Clicked()
+	{
+		if (input5 != null)
+		{
+			CurrentDisplayed = MixerStateEnum.Input5;
+		}
+	}
 
-    public void OnButtonOutput6Clicked()
-    {
-        if (input6 != null)
-        {
-            CurrentDisplayed = MixerStateEnum.Input6;
-        }
-    }
+	public void OnButtonOutput6Clicked()
+	{
+		if (input6 != null)
+		{
+			CurrentDisplayed = MixerStateEnum.Input6;
+		}
+	}
 
-    public void OnButtonOutput7Clicked()
-    {
-        if (input7 != null)
-        {
-            CurrentDisplayed = MixerStateEnum.Input7;
-        }
-    }
+	public void OnButtonOutput7Clicked()
+	{
+		if (input7 != null)
+		{
+			CurrentDisplayed = MixerStateEnum.Input7;
+		}
+	}
 
-    public void OnButtonOutput8Clicked()
-    {
-        if (input8 != null)
-        {
-            CurrentDisplayed = MixerStateEnum.Input8;
-        }
-    }
+	public void OnButtonOutput8Clicked()
+	{
+		if (input8 != null)
+		{
+			CurrentDisplayed = MixerStateEnum.Input8;
+		}
+	}
 
-    public void OnButtonOutputCleanClicked()
-    {
-        CurrentDisplayed = MixerStateEnum.OutputClean;
-    }
+	public void OnButtonOutputCleanClicked()
+	{
+		CurrentDisplayed = MixerStateEnum.OutputClean;
+	}
 
-    public void OnButtonOutputPVRClicked()
-    {
-        CurrentDisplayed = MixerStateEnum.OutputPVR;
-    }
+	public void OnButtonOutputPVRClicked()
+	{
+		CurrentDisplayed = MixerStateEnum.OutputPVR;
+	}
 
-    public void OnButtonOutputMVClicked()
-    {
-        CurrentDisplayed = MixerStateEnum.OutputMV;
-    }
+	public void OnButtonOutputMVClicked()
+	{
+		CurrentDisplayed = MixerStateEnum.OutputMV;
+	}
 
-    public void OnButtonOutputPGMClicked()
-    {
+	public void OnButtonOutputPGMClicked()
+	{
 		CurrentDisplayed = MixerStateEnum.OutputPGM;
-    }
+	}
 
-    public void OnButtonTransitionCutClicked()
+	public void OnButtonTransitionCutClicked()
 	{
 		MixerStateEnum oldProgram = CurrentProgram;
 		MixerStateEnum oldPreview = CurrentPreview;
@@ -451,37 +455,37 @@ public class MixerLogicScript : UdonSharpBehaviour
 
 	private CinemachineVirtualCamera GetVirtualCamera(MixerStateEnum input)
 	{
-        CameraComponent cameraComponent = GetCameraComponent(input);
+		CameraComponent cameraComponent = GetCameraComponent(input);
 		if (cameraComponent != null)
 			return cameraComponent.virtualCamera;
 		return null;
-    }
+	}
 
-    private CinemachineVirtualCamera GetVirtualCamera(byte input)
-    {
-        return GetVirtualCamera((MixerStateEnum)input);
-    }
+	private CinemachineVirtualCamera GetVirtualCamera(byte input)
+	{
+		return GetVirtualCamera((MixerStateEnum)input);
+	}
 
 
-    private OutlinedButtonComponent GetButton(MixerStateEnum input, bool wantsOutput)
-    {
+	private OutlinedButtonComponent GetButton(MixerStateEnum input, bool wantsOutput)
+	{
 		if (!wantsOutput) return null;
-        if (input == MixerStateEnum.Input1) return internalOutput1Button;
-        else if (input == MixerStateEnum.Input2) return internalOutput2Button;
-        else if (input == MixerStateEnum.Input3) return internalOutput3Button;
-        else if (input == MixerStateEnum.Input4) return internalOutput4Button;
-        else if (input == MixerStateEnum.Input5) return internalOutput5Button;
-        else if (input == MixerStateEnum.Input6) return internalOutput6Button;
-        else if (input == MixerStateEnum.Input7) return internalOutput7Button;
-        else if (input == MixerStateEnum.Input8) return internalOutput8Button;
-        else if (input == MixerStateEnum.OutputClean) return internalOutputCleanButton;
-        else if (input == MixerStateEnum.OutputPVR) return internalOutputPVRButton;
-        else if (input == MixerStateEnum.OutputMV) return internalOutputMVButton;
-        else if (input == MixerStateEnum.OutputPGM) return internalOutputPGMButton;
-        return null;
-    }
+		if (input == MixerStateEnum.Input1) return internalOutput1Button;
+		else if (input == MixerStateEnum.Input2) return internalOutput2Button;
+		else if (input == MixerStateEnum.Input3) return internalOutput3Button;
+		else if (input == MixerStateEnum.Input4) return internalOutput4Button;
+		else if (input == MixerStateEnum.Input5) return internalOutput5Button;
+		else if (input == MixerStateEnum.Input6) return internalOutput6Button;
+		else if (input == MixerStateEnum.Input7) return internalOutput7Button;
+		else if (input == MixerStateEnum.Input8) return internalOutput8Button;
+		else if (input == MixerStateEnum.OutputClean) return internalOutputCleanButton;
+		else if (input == MixerStateEnum.OutputPVR) return internalOutputPVRButton;
+		else if (input == MixerStateEnum.OutputMV) return internalOutputMVButton;
+		else if (input == MixerStateEnum.OutputPGM) return internalOutputPGMButton;
+		return null;
+	}
 
-    private Button GetButton(MixerStateEnum input)
+	private Button GetButton(MixerStateEnum input)
 	{
 		if (input == MixerStateEnum.Input1) return internalInput1Button;
 		else if (input == MixerStateEnum.Input2) return internalInput2Button;
@@ -496,15 +500,15 @@ public class MixerLogicScript : UdonSharpBehaviour
 		else if (input == MixerStateEnum.InputMP2) return internalInputMP2Button;
 		else if (input == MixerStateEnum.InputSRC) return internalInputSRCButton;
 		else if (input == MixerStateEnum.InputBlack) return internalInputBlackButton;
-        return null;
+		return null;
 	}
 
-    private OutlinedButtonComponent GetButton(byte input, bool wantsOutput)
-    {
-        return GetButton((MixerStateEnum)input, wantsOutput);
-    }
+	private OutlinedButtonComponent GetButton(byte input, bool wantsOutput)
+	{
+		return GetButton((MixerStateEnum)input, wantsOutput);
+	}
 
-    private Button GetButton(byte input)
+	private Button GetButton(byte input)
 	{
 		return GetButton((MixerStateEnum)input);
 	}
