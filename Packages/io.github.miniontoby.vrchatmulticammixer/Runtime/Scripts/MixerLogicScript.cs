@@ -68,10 +68,12 @@ public class MixerLogicScript : UdonSharpBehaviour
 				{
 					currentProgramCamera.gameObject.SetActive(false);
 					currentProgramInput.image.color = _currentPreview != _currentProgram ? Color.white : Color.green;
+					SetTallyColor((MixerStateEnum)_currentPreview, currentProgramInput.image.color);
 				}
 				else if (_currentProgram <= (byte)MixerStateEnum.Input8)
 				{
 					currentProgramInput.image.color = Color.gray;
+					SetTallyColor((MixerStateEnum)_currentPreview, currentProgramInput.image.color);
 				}
 			}
 
@@ -84,6 +86,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 					_currentProgram = (byte)value;
 					newProgramCamera.gameObject.SetActive(true);
 					newProgramInput.image.color = Color.red;
+					SetTallyColor(value, newProgramInput.image.color);
 				}
 			}
 		}
@@ -101,7 +104,10 @@ public class MixerLogicScript : UdonSharpBehaviour
 			if (currentPreviewInput != null)
 			{
 				if (_currentPreview != _currentProgram)
+				{
 					currentPreviewInput.image.color = GetVirtualCamera(_currentPreview) != null ? Color.white : Color.gray;
+					SetTallyColor((MixerStateEnum)_currentPreview, currentPreviewInput.image.color);
+				}
 				// else it should stay red
 			}
 
@@ -112,7 +118,10 @@ public class MixerLogicScript : UdonSharpBehaviour
 				{
 					_currentPreview = (byte)value;
 					if (_currentPreview != _currentProgram)
+					{
 						newPreviewInput.image.color = Color.green;
+						SetTallyColor(value, newPreviewInput.image.color);
+					}
 					// else it should stay red
 
 					internalTransitionAutoButton.enabled = internalTransitionCutButton.enabled = _currentPreview != _currentProgram;
@@ -132,7 +141,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 			OutlinedButtonComponent currentButton = GetButton(_currentDisplayed, true);
 			if (currentButton != null)
 			{
-				currentButton.text.color = currentButton.outline.color = Color.gray;
+				currentButton.SetColor(Color.gray);
 				CameraComponent currentCameraComponent = GetCameraComponent(_currentDisplayed);
 				if (currentCameraComponent != null && currentCameraComponent.virtualCamera != null)
 				{
@@ -186,7 +195,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 				{
 					return;
 				}
-				newButton.text.color = newButton.outline.color = Color.white;
+				newButton.SetColor(Color.white);
 			}
 			_currentDisplayed = value;
 		}
@@ -195,18 +204,42 @@ public class MixerLogicScript : UdonSharpBehaviour
 
 	private void InitializeInput(byte currentIndex)
 	{
-		Button inputButton = GetButton(currentIndex);
+		MixerStateEnum currentIndexEnum = (MixerStateEnum)currentIndex;
+
+		bool hasVirtualCamera = GetVirtualCamera(currentIndexEnum) != null || currentIndex > (byte)MixerStateEnum.Input8;
+		Button inputButton = GetButton(currentIndexEnum);
 		if (inputButton != null)
 		{
-			bool hasVirtualCamera = GetVirtualCamera(currentIndex) != null || currentIndex > (byte)MixerStateEnum.Input8;
 			inputButton.enabled = hasVirtualCamera;
 			inputButton.image.color = hasVirtualCamera ? Color.white : Color.gray;
 		}
 
-		OutlinedButtonComponent outputButton = GetButton(currentIndex, true);
+		OutlinedButtonComponent outputButton = GetButton(currentIndexEnum, true);
 		if (outputButton != null)
 		{
-			outputButton.text.color = outputButton.outline.color = Color.gray;
+			outputButton.SetColor(Color.gray);
+		}
+
+		CameraComponent inputComponent = GetCameraComponent(currentIndexEnum);
+		if (inputComponent != null)
+		{
+			if (inputComponent.pickup != null)
+			{
+				// When a pickup is attached, set its interact and use texts to say which camera it is
+				string cameraId = currentIndex.ToString().Replace("Input", "");
+				inputComponent.pickup.UseText = "You are operating Camera " + cameraId;
+				inputComponent.pickup.InteractionText = "Operate Camera " + cameraId;
+			}
+			if (inputComponent.previewScreen != null)
+			{
+				// Make sure to hide any preview screen on startup, in case I forgot to hide them whilst testing ;)
+				inputComponent.previewScreen.gameObject.SetActive(false);
+			}
+			if (inputComponent.tallyLight != null)
+			{
+				// Make sure to reset all tally lights to default state on startup, in case I forgot to hide them whilst testing ;)
+				inputComponent.tallyLight.Color = hasVirtualCamera ? Color.white : Color.gray;
+			}
 		}
 	}
 
@@ -466,6 +499,12 @@ public class MixerLogicScript : UdonSharpBehaviour
 		return GetVirtualCamera((MixerStateEnum)input);
 	}
 
+	private void SetTallyColor(MixerStateEnum input, Color color)
+	{
+		CameraComponent cameraComponent = GetCameraComponent(input);
+		if (cameraComponent != null)
+			cameraComponent.tallyLight.Color = color;
+	}
 
 	private OutlinedButtonComponent GetButton(MixerStateEnum input, bool wantsOutput)
 	{
@@ -501,11 +540,6 @@ public class MixerLogicScript : UdonSharpBehaviour
 		else if (input == MixerStateEnum.InputSRC) return internalInputSRCButton;
 		else if (input == MixerStateEnum.InputBlack) return internalInputBlackButton;
 		return null;
-	}
-
-	private OutlinedButtonComponent GetButton(byte input, bool wantsOutput)
-	{
-		return GetButton((MixerStateEnum)input, wantsOutput);
 	}
 
 	private Button GetButton(byte input)

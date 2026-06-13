@@ -1,26 +1,26 @@
 ﻿using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
-using VRC.Udon;
 
 [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
 public class TripodController : UdonSharpBehaviour
 {
     [Header("References")]
     [Tooltip("The pickup component from this object")]
-    [SerializeField] private VRC_Pickup pickupHandTarget; 
+    [SerializeField] private VRC_Pickup pickupHandTarget;
     
     [Tooltip("The transform that will be rotated to point at the pickup. This is usually the camera pivot on the tripod")]
-    [SerializeField] private Transform cameraPivot;   
+    [SerializeField] private Transform cameraPivot;
 
     [Tooltip("The transform that will be rotated")]
     [SerializeField] private Transform gripResetPoint;
 
-    [SerializeField] private CameraComponent cameraComponent;
+    [Tooltip("The cameraComponent to update with OnPickup and OnDrop. Will get autodetected if not specified")]
+    [SerializeField] private CameraComponent cameraComponent = null;
 
     [Header("Settings")]
     [Tooltip("Smoothing factor for syncing to prevent jitter")]
-    [SerializeField] private float lerpSpeed = 15f;       
+    [SerializeField] private float lerpSpeed = 15f;
 
     [Tooltip("Rotation offset if needed")]
     [SerializeField] private Vector3 rotationOffsetEuler = new Vector3(0, -90, 0); //90 by default because it's sideways otherwise
@@ -43,6 +43,8 @@ public class TripodController : UdonSharpBehaviour
 
     void Start()
     {
+        if (cameraComponent == null) cameraComponent = GetComponentInChildren<CameraComponent>();
+
         if (cameraPivot == null) cameraPivot = transform;
         syncedRotation = cameraPivot.rotation;
 
@@ -76,8 +78,7 @@ public class TripodController : UdonSharpBehaviour
             }
             else if (!isHeld && gripResetPoint != null && pickupHandTarget != null)
             {
-                pickupHandTarget.transform.position = gripResetPoint.position;
-                pickupHandTarget.transform.rotation = gripResetPoint.rotation;
+                pickupHandTarget.transform.SetPositionAndRotation(gripResetPoint.position, gripResetPoint.rotation);
             }
         }
         else
@@ -86,8 +87,7 @@ public class TripodController : UdonSharpBehaviour
             
             if (!isHeld && gripResetPoint != null && pickupHandTarget != null)
             {
-                pickupHandTarget.transform.position = gripResetPoint.position;
-                pickupHandTarget.transform.rotation = gripResetPoint.rotation;
+                pickupHandTarget.transform.SetPositionAndRotation(gripResetPoint.position, gripResetPoint.rotation);
             }
         }
     }
@@ -107,8 +107,7 @@ public class TripodController : UdonSharpBehaviour
         if (pickupHandTarget != null && gripResetPoint != null)
         {
             SetOwnerIfNotOwnerYet(pickupHandTarget.gameObject);
-            pickupHandTarget.transform.position = gripResetPoint.position;
-            pickupHandTarget.transform.rotation = gripResetPoint.rotation;
+            pickupHandTarget.transform.SetPositionAndRotation(gripResetPoint.position, gripResetPoint.rotation);
 
             if (pickupRigidbody != null)
             {

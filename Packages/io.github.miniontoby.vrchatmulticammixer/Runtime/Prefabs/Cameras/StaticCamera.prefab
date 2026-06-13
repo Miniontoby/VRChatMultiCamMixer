@@ -109,6 +109,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2425588162009791703}
+  - {fileID: 4753909844463789574}
   - {fileID: 2193480803187363426}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -134,9 +135,11 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1957187247027567182}
+  pickup: {fileID: 0}
   virtualCamera: {fileID: 1576284824484920626}
   previewCamera: {fileID: 592986873913836218}
   previewScreen: {fileID: 0}
+  tallyLight: {fileID: 1677050403647690581}
 --- !u!114 &1957187247027567182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,4 +411,96 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c5d5afd37e2821345b1325bce5e1a61e,
     type: 3}
   m_PrefabInstance: {fileID: 2748272097963875132}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5892607539343503098
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2570570659701533808}
+    m_Modifications:
+    - target: {fileID: 1170927686208751868, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0051
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170927686208751868, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2799
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170927686208751868, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.1275
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170927686208751868, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170927686208751868, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170927686208751868, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170927686208751868, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170927686208751868, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170927686208751868, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170927686208751868, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4681575869110664462, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+      propertyPath: m_Name
+      value: TallyLight
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080248545488091567, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 5080248545488091567, guid: 7292f00bfafcca541b6cc525142c086f,
+        type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7292f00bfafcca541b6cc525142c086f, type: 3}
+--- !u!114 &1677050403647690581 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5080248545488091567, guid: 7292f00bfafcca541b6cc525142c086f,
+    type: 3}
+  m_PrefabInstance: {fileID: 5892607539343503098}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6c42789327f554d9ca7ab69f7e70df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &4753909844463789574 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1170927686208751868, guid: 7292f00bfafcca541b6cc525142c086f,
+    type: 3}
+  m_PrefabInstance: {fileID: 5892607539343503098}
   m_PrefabAsset: {fileID: 0}

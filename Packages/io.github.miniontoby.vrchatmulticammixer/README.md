@@ -23,9 +23,9 @@ Models:
 Features:
 - [x] Input preview selection
   - Input button becomes green when in preview
-- [x] Cutting preview into program
+- [x] Cutting from preview into program
   - Input button becomes red when in program
-- [ ] Transition preview into program
+- [ ] Transition/auto from preview into program
 - [x] Output preview selection:
   - [x] Program
   - [ ] Preview
@@ -60,7 +60,11 @@ Models:
 
 Features:
 - [x] Preview screen when operating camera
-- [ ] Tally light on camera
+- [x] Tally light on camera
+  - Red on program
+  - Green on preview
+  - White on 'standby'
+  - Gray on error
 - [ ] Zoom control
 - [ ] Focus control
 
@@ -69,7 +73,7 @@ Features:
 
 First install the package to your world, either by adding the [VCC Repository](https://miniontoby.github.io/VRChatMultiCamMixer/) to your VCC/Alcom, or by importing the unitypackage from the [Github Releases](https://github.com/Miniontoby/VRChatMultiCamMixer/releases) page.  
 After doing that, you must drop in a mixer from the `Runtime/Prefabs/Mixers` folder in the VRChatMultiCamMixer package folder.  
-After that, you can drop in camera's from the `Runtime/Prefabs/Cameras` folder in the VRChatMultiCamMixer package folder.  
+After that, you can drop in camera's from the `Runtime/Prefabs/Cameras` folder in the VRChatMultiCamMixer package folder. You likely want to edit the Culling Mask to hide UI related stuff, this is NOT done for you.  
 After that, click on your mixer and drop in the camera's your placed into the Input 1 thru 8 (depending on which mixer you're using), so that the mixer knows which camera is which input.  
 After that, you can go test in the editor if it works, and if it works, you can go and upload your world to test it in VRChat!  
 
