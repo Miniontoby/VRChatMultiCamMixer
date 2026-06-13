@@ -201,6 +201,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: AtemMiniExtreme Mixer
       objectReference: {fileID: 0}
+    - target: {fileID: 3309880199375654984, guid: e090bbf65d8e64a4fadcb1a669a5d976,
+        type: 3}
+      propertyPath: behaviour
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3309880199375654984, guid: e090bbf65d8e64a4fadcb1a669a5d976,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3309880199375654984, guid: e090bbf65d8e64a4fadcb1a669a5d976,
+        type: 3}
+      propertyPath: activeEvents
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3395107781259455131, guid: e090bbf65d8e64a4fadcb1a669a5d976,
         type: 3}
       propertyPath: m_fontColor32.rgba
@@ -438,6 +453,12 @@ PrefabInstance:
       propertyPath: _syncMethod
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8369774245803183834, guid: e090bbf65d8e64a4fadcb1a669a5d976,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8369774245803183834, guid: e090bbf65d8e64a4fadcb1a669a5d976,
+        type: 3}
     - target: {fileID: 8582228072659551603, guid: e090bbf65d8e64a4fadcb1a669a5d976,
         type: 3}
       propertyPath: serializationData.Prefab
@@ -470,6 +491,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e090bbf65d8e64a4fadcb1a669a5d976, type: 3}
+--- !u!1 &152997465 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4961267073139193436, guid: e090bbf65d8e64a4fadcb1a669a5d976,
+    type: 3}
+  m_PrefabInstance: {fileID: 94654257}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &358170787
 GameObject:
   m_ObjectHideFlags: 0
@@ -2016,6 +2043,10 @@ MonoBehaviour:
     - VRC.Udon.UdonBehaviour
   - gameObject: {fileID: 1011604484}
     ID: 47
+    SerializedTypeNames:
+    - VRC.Udon.UdonBehaviour
+  - gameObject: {fileID: 152997465}
+    ID: 48
     SerializedTypeNames:
     - VRC.Udon.UdonBehaviour
   portraitCameraPositionOffset: {x: 0, y: 0, z: 0}

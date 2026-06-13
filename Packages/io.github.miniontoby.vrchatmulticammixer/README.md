@@ -31,7 +31,9 @@ Features:
   - [ ] Preview
   - [x] Specific cameras
   - [ ] Multi View
-- [ ] Remote control thru OSC/MIDI for using external controller instead of pressing buttons in-game
+- [x] Remote control thru MIDI for using external controller instead of pressing buttons in-game
+  - Uses ControlChange messages on channel 15 and control 126
+  - There's code available of a NodeJS standalone app and there's a [Companion module](https://github.com/miniontoby/companion-module-vrchat-midi-multicammixer) available.
 
 
 ### Camera's
@@ -64,7 +66,7 @@ Features:
   - Red on program
   - Green on preview
   - White on 'standby'
-  - Gray on error
+  - Gray on not connected
 - [ ] Zoom control
 - [ ] Focus control
 

@@ -60,30 +60,31 @@ public class MixerLogicScript : UdonSharpBehaviour
 	{
 		set
 		{
-			Button currentProgramInput = GetButton(_currentProgram);
-			if (currentProgramInput != null)
-			{
-				CinemachineVirtualCamera currentProgramCamera = GetVirtualCamera(_currentProgram);
-				if (currentProgramCamera != null)
-				{
-					currentProgramCamera.gameObject.SetActive(false);
-					currentProgramInput.image.color = _currentPreview != _currentProgram ? Color.white : Color.green;
-					SetTallyColor((MixerStateEnum)_currentPreview, currentProgramInput.image.color);
-				}
-				else if (_currentProgram <= (byte)MixerStateEnum.Input8)
-				{
-					currentProgramInput.image.color = Color.gray;
-					SetTallyColor((MixerStateEnum)_currentPreview, currentProgramInput.image.color);
-				}
-			}
-
 			Button newProgramInput = GetButton(value);
 			if (newProgramInput != null)
 			{
 				CinemachineVirtualCamera newProgramCamera = GetVirtualCamera(value);
 				if (newProgramCamera != null)
-				{
-					_currentProgram = (byte)value;
+                {
+                    Button currentProgramInput = GetButton(_currentProgram);
+                    if (currentProgramInput != null)
+                    {
+                        CinemachineVirtualCamera currentProgramCamera = GetVirtualCamera(_currentProgram);
+                        if (currentProgramCamera != null)
+                        {
+                            currentProgramCamera.gameObject.SetActive(false);
+                            currentProgramInput.image.color = _currentPreview != _currentProgram ? Color.white : Color.green;
+                            SetTallyColor((MixerStateEnum)_currentProgram, currentProgramInput.image.color);
+                        }
+                        else if (_currentProgram <= (byte)MixerStateEnum.Input8)
+                        {
+                            currentProgramInput.image.color = Color.gray;
+                            SetTallyColor((MixerStateEnum)_currentProgram, currentProgramInput.image.color);
+                        }
+                    }
+
+
+                    _currentProgram = (byte)value;
 					newProgramCamera.gameObject.SetActive(true);
 					newProgramInput.image.color = Color.red;
 					SetTallyColor(value, newProgramInput.image.color);
@@ -100,23 +101,24 @@ public class MixerLogicScript : UdonSharpBehaviour
 	{
 		set
 		{
-			Button currentPreviewInput = GetButton(_currentPreview);
-			if (currentPreviewInput != null)
-			{
-				if (_currentPreview != _currentProgram)
-				{
-					currentPreviewInput.image.color = GetVirtualCamera(_currentPreview) != null ? Color.white : Color.gray;
-					SetTallyColor((MixerStateEnum)_currentPreview, currentPreviewInput.image.color);
-				}
-				// else it should stay red
-			}
-
 			Button newPreviewInput = GetButton(value);
 			if (newPreviewInput != null)
 			{
 				if (GetVirtualCamera(value) != null)
-				{
-					_currentPreview = (byte)value;
+                {
+                    Button currentPreviewInput = GetButton(_currentPreview);
+                    if (currentPreviewInput != null)
+                    {
+                        if (_currentPreview != _currentProgram)
+                        {
+                            currentPreviewInput.image.color = GetVirtualCamera(_currentPreview) != null ? Color.white : Color.gray;
+                            SetTallyColor((MixerStateEnum)_currentPreview, currentPreviewInput.image.color);
+                        }
+                        // else it should stay red
+                    }
+
+
+                    _currentPreview = (byte)value;
 					if (_currentPreview != _currentProgram)
 					{
 						newPreviewInput.image.color = Color.green;
@@ -128,6 +130,21 @@ public class MixerLogicScript : UdonSharpBehaviour
 					internalTransitionAutoButton.image.color = internalTransitionCutButton.image.color = _currentPreview != _currentProgram ? Color.white : Color.gray;
 				}
 			}
+			else if (value == MixerStateEnum.None)
+            {
+                Button currentPreviewInput = GetButton(_currentPreview);
+                if (currentPreviewInput != null)
+                {
+                    if (_currentPreview != _currentProgram)
+                    {
+                        currentPreviewInput.image.color = GetVirtualCamera(_currentPreview) != null ? Color.white : Color.gray;
+                        SetTallyColor((MixerStateEnum)_currentPreview, currentPreviewInput.image.color);
+                    }
+                    // else it should stay red
+                }
+
+                _currentPreview = (byte)value;
+            }
 		}
 		get => (MixerStateEnum)_currentPreview;
 	}

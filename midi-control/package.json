@@ -1,0 +1,12 @@
+{
+	"name": "vrchat-midi-multicammixer-poc",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"start": "node ."
+	},
+	"license": "MIT",
+	"dependencies": {
+		"@julusian/midi": "^3.6.1"
+	}
+}
