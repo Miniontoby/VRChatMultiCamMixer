@@ -74,11 +74,15 @@ public class MIDIMultiCamMixer : UdonSharpBehaviour
 			if (address == 0)
 			{
 				mixerLogic.CurrentProgram = (MixerStateEnum)(byte)(velocity & 0x3F);
+				Networking.SetOwner(Networking.LocalPlayer, mixerLogic.gameObject);
+				mixerLogic.RequestSerialization();
 				Debug.Log("[MIDIMultiCamMixer] CurrentProgram: " + mixerLogic.CurrentProgram.ToString());
 			}
 			else if (address == 1)
 			{
 				mixerLogic.CurrentPreview = (MixerStateEnum)(byte)(velocity & 0x3F);
+				Networking.SetOwner(Networking.LocalPlayer, mixerLogic.gameObject);
+				mixerLogic.RequestSerialization();
 				Debug.Log("[MIDIMultiCamMixer] CurrentPreview: " + mixerLogic.CurrentPreview.ToString());
 			}
 		}
@@ -86,7 +90,7 @@ public class MIDIMultiCamMixer : UdonSharpBehaviour
 		if (value == 127)
 		{
 			lastUpdate = Time.fixedTime;
-			Debug.Log("MIDIMIXERREADY");
+			Debug.Log("MIXERREADY");
 		}
 	}
 

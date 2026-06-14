@@ -70,7 +70,7 @@ class MIDIMultiCamMixer {
 
 	Deconstruct() {
 		if (this.watchdogInterval) clearInterval(this.watchdogInterval);
-		if (this.logStream) this.logStream.close();
+		if (this.logStream) this.logStream = null;
 		if (this.connected) this.output.closePort();
 	}
 
@@ -146,7 +146,7 @@ class MIDIMultiCamMixer {
 			fs.closeSync(fd);
 			this.logStream.bytesRead += newBytes;
 
-			return buf.includes('MIDIMIXERREADY');
+			return buf.includes('MIXERREADY');
 		} catch {
 			return false;
 		}

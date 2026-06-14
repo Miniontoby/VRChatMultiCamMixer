@@ -1,7 +1,8 @@
-﻿using UdonSharp;
+﻿using Cinemachine;
+using UdonSharp;
 using UnityEngine;
-using Cinemachine;
 using UnityEngine.UI;
+using VRC.SDKBase;
 
 [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
 public class MixerLogicScript : UdonSharpBehaviour
@@ -53,10 +54,10 @@ public class MixerLogicScript : UdonSharpBehaviour
 	[SerializeField] private OutlinedButtonComponent internalOutputMVButton;
 	[SerializeField] private OutlinedButtonComponent internalOutputPGMButton;
 
-	[UdonSynced]
+	[UdonSynced, FieldChangeCallback(nameof(CurrentProgramByte))]
 	private byte _currentProgram = (byte)MixerStateEnum.InputBlack;
 
-	public MixerStateEnum CurrentProgram
+	private byte CurrentProgramByte
 	{
 		set
 		{
@@ -65,39 +66,44 @@ public class MixerLogicScript : UdonSharpBehaviour
 			{
 				CinemachineVirtualCamera newProgramCamera = GetVirtualCamera(value);
 				if (newProgramCamera != null)
-                {
-                    Button currentProgramInput = GetButton(_currentProgram);
-                    if (currentProgramInput != null)
-                    {
-                        CinemachineVirtualCamera currentProgramCamera = GetVirtualCamera(_currentProgram);
-                        if (currentProgramCamera != null)
-                        {
-                            currentProgramCamera.gameObject.SetActive(false);
-                            currentProgramInput.image.color = _currentPreview != _currentProgram ? Color.white : Color.green;
-                            SetTallyColor((MixerStateEnum)_currentProgram, currentProgramInput.image.color);
-                        }
-                        else if (_currentProgram <= (byte)MixerStateEnum.Input8)
-                        {
-                            currentProgramInput.image.color = Color.gray;
-                            SetTallyColor((MixerStateEnum)_currentProgram, currentProgramInput.image.color);
-                        }
-                    }
+				{
+					Button currentProgramInput = GetButton(_currentProgram);
+					if (currentProgramInput != null)
+					{
+						CinemachineVirtualCamera currentProgramCamera = GetVirtualCamera(_currentProgram);
+						if (currentProgramCamera != null)
+						{
+							currentProgramCamera.gameObject.SetActive(false);
+							currentProgramInput.image.color = _currentPreview != _currentProgram ? Color.white : Color.green;
+							SetTallyColor(_currentProgram, currentProgramInput.image.color);
+						}
+						else if (_currentProgram <= (byte)MixerStateEnum.Input8)
+						{
+							currentProgramInput.image.color = Color.gray;
+							SetTallyColor(_currentProgram, currentProgramInput.image.color);
+						}
+					}
 
-
-                    _currentProgram = (byte)value;
+					_currentProgram = value;
 					newProgramCamera.gameObject.SetActive(true);
 					newProgramInput.image.color = Color.red;
 					SetTallyColor(value, newProgramInput.image.color);
 				}
 			}
 		}
-		get => (MixerStateEnum)_currentProgram;
+		get => _currentProgram;
 	}
 
-	[UdonSynced]
+	public MixerStateEnum CurrentProgram
+	{
+		set => CurrentProgramByte = (byte)value;
+		get => (MixerStateEnum)CurrentProgramByte;
+	}
+
+	[UdonSynced, FieldChangeCallback(nameof(CurrentPreviewByte))]
 	private byte _currentPreview = (byte)MixerStateEnum.InputBlack;
 
-	public MixerStateEnum CurrentPreview
+	private byte CurrentPreviewByte
 	{
 		set
 		{
@@ -105,20 +111,20 @@ public class MixerLogicScript : UdonSharpBehaviour
 			if (newPreviewInput != null)
 			{
 				if (GetVirtualCamera(value) != null)
-                {
-                    Button currentPreviewInput = GetButton(_currentPreview);
-                    if (currentPreviewInput != null)
-                    {
-                        if (_currentPreview != _currentProgram)
-                        {
-                            currentPreviewInput.image.color = GetVirtualCamera(_currentPreview) != null ? Color.white : Color.gray;
-                            SetTallyColor((MixerStateEnum)_currentPreview, currentPreviewInput.image.color);
-                        }
-                        // else it should stay red
-                    }
+				{
+					Button currentPreviewInput = GetButton(_currentPreview);
+					if (currentPreviewInput != null)
+					{
+						if (_currentPreview != _currentProgram)
+						{
+							currentPreviewInput.image.color = GetVirtualCamera(_currentPreview) != null ? Color.white : Color.gray;
+							SetTallyColor(_currentPreview, currentPreviewInput.image.color);
+						}
+						// else it should stay red
+					}
 
 
-                    _currentPreview = (byte)value;
+					_currentPreview = (byte)value;
 					if (_currentPreview != _currentProgram)
 					{
 						newPreviewInput.image.color = Color.green;
@@ -130,23 +136,29 @@ public class MixerLogicScript : UdonSharpBehaviour
 					internalTransitionAutoButton.image.color = internalTransitionCutButton.image.color = _currentPreview != _currentProgram ? Color.white : Color.gray;
 				}
 			}
-			else if (value == MixerStateEnum.None)
-            {
-                Button currentPreviewInput = GetButton(_currentPreview);
-                if (currentPreviewInput != null)
-                {
-                    if (_currentPreview != _currentProgram)
-                    {
-                        currentPreviewInput.image.color = GetVirtualCamera(_currentPreview) != null ? Color.white : Color.gray;
-                        SetTallyColor((MixerStateEnum)_currentPreview, currentPreviewInput.image.color);
-                    }
-                    // else it should stay red
-                }
+			else if (value == (byte)MixerStateEnum.None)
+			{
+				Button currentPreviewInput = GetButton(_currentPreview);
+				if (currentPreviewInput != null)
+				{
+					if (_currentPreview != _currentProgram)
+					{
+						currentPreviewInput.image.color = GetVirtualCamera(_currentPreview) != null ? Color.white : Color.gray;
+						SetTallyColor(_currentPreview, currentPreviewInput.image.color);
+					}
+					// else it should stay red
+				}
 
-                _currentPreview = (byte)value;
-            }
+				_currentPreview = (byte)value;
+			}
 		}
-		get => (MixerStateEnum)_currentPreview;
+		get => _currentPreview;
+	}
+
+	public MixerStateEnum CurrentPreview
+	{
+		set => CurrentPreviewByte = (byte)value;
+		get => (MixerStateEnum)CurrentPreviewByte;
 	}
 
 	// This is a local setting
@@ -278,6 +290,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		if (input1 != null)
 		{
 			CurrentPreview = MixerStateEnum.Input1;
+			Networking.SetOwner(Networking.LocalPlayer, gameObject);
 			RequestSerialization();
 		}
 	}
@@ -287,6 +300,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		if (input2 != null)
 		{
 			CurrentPreview = MixerStateEnum.Input2;
+			Networking.SetOwner(Networking.LocalPlayer, gameObject);
 			RequestSerialization();
 		}
 	}
@@ -296,6 +310,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		if (input3 != null)
 		{
 			CurrentPreview = MixerStateEnum.Input3;
+			Networking.SetOwner(Networking.LocalPlayer, gameObject);
 			RequestSerialization();
 		}
 	}
@@ -305,6 +320,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		if (input4 != null)
 		{
 			CurrentPreview = MixerStateEnum.Input4;
+			Networking.SetOwner(Networking.LocalPlayer, gameObject);
 			RequestSerialization();
 		}
 	}
@@ -314,6 +330,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		if (input5 != null)
 		{
 			CurrentPreview = MixerStateEnum.Input5;
+			Networking.SetOwner(Networking.LocalPlayer, gameObject);
 			RequestSerialization();
 		}
 	}
@@ -323,6 +340,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		if (input6 != null)
 		{
 			CurrentPreview = MixerStateEnum.Input6;
+			Networking.SetOwner(Networking.LocalPlayer, gameObject);
 			RequestSerialization();
 		}
 	}
@@ -332,6 +350,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		if (input7 != null)
 		{
 			CurrentPreview = MixerStateEnum.Input7;
+			Networking.SetOwner(Networking.LocalPlayer, gameObject);
 			RequestSerialization();
 		}
 	}
@@ -341,6 +360,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		if (input8 != null)
 		{
 			CurrentPreview = MixerStateEnum.Input8;
+			Networking.SetOwner(Networking.LocalPlayer, gameObject);
 			RequestSerialization();
 		}
 	}
@@ -350,6 +370,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		//if (inputMP1 != null)
 		//{
 		CurrentPreview = MixerStateEnum.InputMP1;
+		Networking.SetOwner(Networking.LocalPlayer, gameObject);
 		RequestSerialization();
 		//}
 	}
@@ -359,6 +380,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		//if (inputMP2 != null)
 		//{
 		CurrentPreview = MixerStateEnum.InputMP2;
+		Networking.SetOwner(Networking.LocalPlayer, gameObject);
 		RequestSerialization();
 		//}
 	}
@@ -368,6 +390,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		//if (inputSRC != null)
 		//{
 		//CurrentPreview = MixerStateEnum.InputSRC;
+		//Networking.SetOwner(Networking.LocalPlayer, gameObject);
 		//RequestSerialization();
 		//}
 	}
@@ -377,6 +400,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		//if (inputBlack != null)
 		//{
 		CurrentPreview = MixerStateEnum.InputBlack;
+		Networking.SetOwner(Networking.LocalPlayer, gameObject);
 		RequestSerialization();
 		//}
 	}
@@ -473,6 +497,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		CurrentPreview = MixerStateEnum.None;
 		CurrentProgram = oldPreview;
 		CurrentPreview = oldProgram;
+		Networking.SetOwner(Networking.LocalPlayer, gameObject);
 		RequestSerialization();
 	}
 
@@ -484,6 +509,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 		CurrentProgram = oldPreview;
 		CurrentPreview = oldProgram;
 		// @TODO make this auto, instead of cut
+		Networking.SetOwner(Networking.LocalPlayer, gameObject);
 		RequestSerialization();
 	}
 	#endregion
@@ -516,9 +542,9 @@ public class MixerLogicScript : UdonSharpBehaviour
 		return GetVirtualCamera((MixerStateEnum)input);
 	}
 
-	private void SetTallyColor(MixerStateEnum input, Color color)
+	private void SetTallyColor(byte input, Color color)
 	{
-		CameraComponent cameraComponent = GetCameraComponent(input);
+		CameraComponent cameraComponent = GetCameraComponent((MixerStateEnum)input);
 		if (cameraComponent != null)
 			cameraComponent.tallyLight.Color = color;
 	}
