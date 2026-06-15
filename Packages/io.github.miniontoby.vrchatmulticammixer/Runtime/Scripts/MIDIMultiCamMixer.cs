@@ -127,12 +127,12 @@ public class MIDIMultiCamMixer : UdonSharpBehaviour
 		knockState = 0;
 	}
 
-	private void OnMixerStatusProgramUpdate()
+	public void OnMixerStatusProgramUpdate()
 	{
 		Debug.Log("[MIDIMultiCamMixer] CurrentProgram: " + mixerLogic.CurrentProgram.ToString());
 	}
 
-	private void OnMixerStatusPreviewUpdate()
+	public void OnMixerStatusPreviewUpdate()
 	{
 		Debug.Log("[MIDIMultiCamMixer] CurrentPreview: " + mixerLogic.CurrentPreview.ToString());
 	}
