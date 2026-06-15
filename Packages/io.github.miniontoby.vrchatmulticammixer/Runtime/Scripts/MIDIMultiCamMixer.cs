@@ -22,6 +22,8 @@ public class MIDIMultiCamMixer : UdonSharpBehaviour
 	void Start()
 	{
 		state = false;
+
+		mixerLogic._RegisterEvent(this, nameof(OnMixerStatusProgramUpdate), nameof(OnMixerStatusPreviewUpdate));
 	}
 
 	public bool GetState()
@@ -115,12 +117,24 @@ public class MIDIMultiCamMixer : UdonSharpBehaviour
 		knockState = 3;
 		state = true;
 		Debug.Log("[MIDIMultiCamMixer] Unlocked and ready.");
+		Debug.Log("[MIDIMultiCamMixer] CurrentProgram: " + mixerLogic.CurrentProgram.ToString());
+		Debug.Log("[MIDIMultiCamMixer] CurrentPreview: " + mixerLogic.CurrentPreview.ToString());
 	}
 
 	void MidiEnd()
 	{
 		state = false;
 		knockState = 0;
+	}
+
+	private void OnMixerStatusProgramUpdate()
+	{
+		Debug.Log("[MIDIMultiCamMixer] CurrentProgram: " + mixerLogic.CurrentProgram.ToString());
+	}
+
+	private void OnMixerStatusPreviewUpdate()
+	{
+		Debug.Log("[MIDIMultiCamMixer] CurrentPreview: " + mixerLogic.CurrentPreview.ToString());
 	}
 
 	private string[] Add(string[] inputArray, string toAdd)

@@ -1,4 +1,5 @@
 ﻿using Cinemachine;
+using System;
 using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
@@ -54,7 +55,11 @@ public class MixerLogicScript : UdonSharpBehaviour
 	[SerializeField] private OutlinedButtonComponent internalOutputMVButton;
 	[SerializeField] private OutlinedButtonComponent internalOutputPGMButton;
 
-	[UdonSynced, FieldChangeCallback(nameof(CurrentProgramByte))]
+	Component[] eventObjects = new Component[0];
+    string[] eventProgramCallbacks = new string[0];
+    string[] eventPreviewCallbacks = new string[0];
+
+    [UdonSynced, FieldChangeCallback(nameof(CurrentProgramByte))]
 	private byte _currentProgram = (byte)MixerStateEnum.InputBlack;
 
 	private byte CurrentProgramByte
@@ -88,6 +93,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 					newProgramCamera.gameObject.SetActive(true);
 					newProgramInput.image.color = Color.red;
 					SetTallyColor(value, newProgramInput.image.color);
+					ProcessProgramEvents();
 				}
 			}
 		}
@@ -124,7 +130,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 					}
 
 
-					_currentPreview = (byte)value;
+					_currentPreview = value;
 					if (_currentPreview != _currentProgram)
 					{
 						newPreviewInput.image.color = Color.green;
@@ -134,6 +140,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 
 					internalTransitionAutoButton.enabled = internalTransitionCutButton.enabled = _currentPreview != _currentProgram;
 					internalTransitionAutoButton.image.color = internalTransitionCutButton.image.color = _currentPreview != _currentProgram ? Color.white : Color.gray;
+					ProcessPreviewEvents();
 				}
 			}
 			else if (value == (byte)MixerStateEnum.None)
@@ -149,7 +156,8 @@ public class MixerLogicScript : UdonSharpBehaviour
 					// else it should stay red
 				}
 
-				_currentPreview = (byte)value;
+				_currentPreview = value;
+                ProcessPreviewEvents();
 			}
 		}
 		get => _currentPreview;
@@ -258,8 +266,8 @@ public class MixerLogicScript : UdonSharpBehaviour
 				string cameraId = currentIndex.ToString().Replace("Input", "");
 				inputComponent.pickup.UseText = "You are operating Camera " + cameraId;
 				inputComponent.pickup.InteractionText = "Operate Camera " + cameraId;
-			}
-			if (inputComponent.previewScreen != null)
+            }
+            if (inputComponent.previewScreen != null)
 			{
 				// Make sure to hide any preview screen on startup, in case I forgot to hide them whilst testing ;)
 				inputComponent.previewScreen.gameObject.SetActive(false);
@@ -283,9 +291,38 @@ public class MixerLogicScript : UdonSharpBehaviour
 		CurrentDisplayed = MixerStateEnum.OutputPGM;
 	}
 
+	public void _RegisterEvent(Component obj, string programCallback, string previewCallback)
+	{
+		eventObjects = Add(eventObjects, obj);
+		eventProgramCallbacks = Add(eventProgramCallbacks, programCallback);
+        eventPreviewCallbacks = Add(eventPreviewCallbacks, previewCallback);
+    }
 
-	#region Custom Event Listeners
-	public void OnButtonInput1Clicked()
+	void ProcessProgramEvents()
+	{
+		for (int i = 0; i < eventObjects.Length; i++)
+		{
+			if (!eventObjects[i]) continue;
+			UdonSharpBehaviour behaviour = (UdonSharpBehaviour)eventObjects[i];
+			if (Utilities.IsValid(behaviour))
+				behaviour.SendCustomEvent(eventProgramCallbacks[i]);
+		}
+    }
+
+    void ProcessPreviewEvents()
+    {
+        for (int i = 0; i < eventObjects.Length; i++)
+        {
+            if (!eventObjects[i]) continue;
+            UdonSharpBehaviour behaviour = (UdonSharpBehaviour)eventObjects[i];
+            if (Utilities.IsValid(behaviour))
+                behaviour.SendCustomEvent(eventPreviewCallbacks[i]);
+        }
+    }
+
+
+    #region Custom Event Listeners
+    public void OnButtonInput1Clicked()
 	{
 		if (input1 != null)
 		{
@@ -589,5 +626,21 @@ public class MixerLogicScript : UdonSharpBehaviour
 	{
 		return GetButton((MixerStateEnum)input);
 	}
-	#endregion
+
+    private string[] Add(string[] inputArray, string toAdd)
+    {
+        string[] output = new string[inputArray.Length + 1];
+        Array.Copy(inputArray, output, inputArray.Length);
+        output[inputArray.Length] = toAdd;
+        return output;
+    }
+
+    private Component[] Add(Component[] inputArray, Component toAdd)
+    {
+        Component[] output = new Component[inputArray.Length + 1];
+        Array.Copy(inputArray, output, inputArray.Length);
+        output[inputArray.Length] = toAdd;
+        return output;
+    }
+    #endregion
 }

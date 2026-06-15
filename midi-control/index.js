@@ -106,6 +106,10 @@ class MIDIMultiCamMixer {
 	}
 
 	_Reset() {
+		this.connected = false;
+		this.CurrentProgram = 0;
+		this.CurrentPreview = 0;
+
 		this._findVRCLog();
 		this._midiKnock();
 		this._midiWatchdog();
@@ -146,7 +150,15 @@ class MIDIMultiCamMixer {
 			fs.closeSync(fd);
 			this.logStream.bytesRead += newBytes;
 
-			return buf.includes('MIXERREADY');
+			const text = buf.toString('utf8');
+
+			const programMatch = text.match(/\[MIDIMultiCamMixer\] CurrentProgram: (\d+)/);
+			if (programMatch) this.CurrentProgram = parseInt(programMatch[1], 10);
+
+			const previewMatch = text.match(/\[MIDIMultiCamMixer\] CurrentPreview: (\d+)/);
+			if (previewMatch) this.CurrentPreview = parseInt(previewMatch[1], 10);
+
+			return text.includes('MIXERREADY');
 		} catch {
 			return false;
 		}
