@@ -56,10 +56,10 @@ public class MixerLogicScript : UdonSharpBehaviour
 	[SerializeField] private OutlinedButtonComponent internalOutputPGMButton;
 
 	Component[] eventObjects = new Component[0];
-    string[] eventProgramCallbacks = new string[0];
-    string[] eventPreviewCallbacks = new string[0];
+	string[] eventProgramCallbacks = new string[0];
+	string[] eventPreviewCallbacks = new string[0];
 
-    [UdonSynced, FieldChangeCallback(nameof(CurrentProgramByte))]
+	[UdonSynced, FieldChangeCallback(nameof(CurrentProgramByte))]
 	private byte _currentProgram = (byte)MixerStateEnum.InputBlack;
 
 	private byte CurrentProgramByte
@@ -157,7 +157,7 @@ public class MixerLogicScript : UdonSharpBehaviour
 				}
 
 				_currentPreview = value;
-                ProcessPreviewEvents();
+				ProcessPreviewEvents();
 			}
 		}
 		get => _currentPreview;
@@ -266,8 +266,8 @@ public class MixerLogicScript : UdonSharpBehaviour
 				string cameraId = currentIndex.ToString().Replace("Input", "");
 				inputComponent.pickup.UseText = "You are operating Camera " + cameraId;
 				inputComponent.pickup.InteractionText = "Operate Camera " + cameraId;
-            }
-            if (inputComponent.previewScreen != null)
+			}
+			if (inputComponent.previewScreen != null)
 			{
 				// Make sure to hide any preview screen on startup, in case I forgot to hide them whilst testing ;)
 				inputComponent.previewScreen.gameObject.SetActive(false);
@@ -295,8 +295,8 @@ public class MixerLogicScript : UdonSharpBehaviour
 	{
 		eventObjects = Add(eventObjects, obj);
 		eventProgramCallbacks = Add(eventProgramCallbacks, programCallback);
-        eventPreviewCallbacks = Add(eventPreviewCallbacks, previewCallback);
-    }
+		eventPreviewCallbacks = Add(eventPreviewCallbacks, previewCallback);
+	}
 
 	void ProcessProgramEvents()
 	{
@@ -307,22 +307,22 @@ public class MixerLogicScript : UdonSharpBehaviour
 			if (Utilities.IsValid(behaviour))
 				behaviour.SendCustomEvent(eventProgramCallbacks[i]);
 		}
-    }
+	}
 
-    void ProcessPreviewEvents()
-    {
-        for (int i = 0; i < eventObjects.Length; i++)
-        {
-            if (!eventObjects[i]) continue;
-            UdonSharpBehaviour behaviour = (UdonSharpBehaviour)eventObjects[i];
-            if (Utilities.IsValid(behaviour))
-                behaviour.SendCustomEvent(eventPreviewCallbacks[i]);
-        }
-    }
+	void ProcessPreviewEvents()
+	{
+		for (int i = 0; i < eventObjects.Length; i++)
+		{
+			if (!eventObjects[i]) continue;
+			UdonSharpBehaviour behaviour = (UdonSharpBehaviour)eventObjects[i];
+			if (Utilities.IsValid(behaviour))
+				behaviour.SendCustomEvent(eventPreviewCallbacks[i]);
+		}
+	}
 
 
-    #region Custom Event Listeners
-    public void OnButtonInput1Clicked()
+	#region Custom Event Listeners
+	public void OnButtonInput1Clicked()
 	{
 		if (input1 != null)
 		{
@@ -627,20 +627,20 @@ public class MixerLogicScript : UdonSharpBehaviour
 		return GetButton((MixerStateEnum)input);
 	}
 
-    private string[] Add(string[] inputArray, string toAdd)
-    {
-        string[] output = new string[inputArray.Length + 1];
-        Array.Copy(inputArray, output, inputArray.Length);
-        output[inputArray.Length] = toAdd;
-        return output;
-    }
+	private string[] Add(string[] inputArray, string toAdd)
+	{
+		string[] output = new string[inputArray.Length + 1];
+		Array.Copy(inputArray, output, inputArray.Length);
+		output[inputArray.Length] = toAdd;
+		return output;
+	}
 
-    private Component[] Add(Component[] inputArray, Component toAdd)
-    {
-        Component[] output = new Component[inputArray.Length + 1];
-        Array.Copy(inputArray, output, inputArray.Length);
-        output[inputArray.Length] = toAdd;
-        return output;
-    }
-    #endregion
+	private Component[] Add(Component[] inputArray, Component toAdd)
+	{
+		Component[] output = new Component[inputArray.Length + 1];
+		Array.Copy(inputArray, output, inputArray.Length);
+		output[inputArray.Length] = toAdd;
+		return output;
+	}
+	#endregion
 }

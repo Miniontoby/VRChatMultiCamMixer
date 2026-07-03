@@ -24,5 +24,5 @@ Then (re)start VRChat.
 First install the packages using `npm install` (requires NodeJS to be installed).
 Then just run `node standalone_client.js` to run the client.
 
-You can pass the loopMIDI port as the first argument.  
-When running in editor, you should pass `true` after the loopMIDI port to tell the script to use the editor logs.
+You can pass the loopMIDI port as the first argument in case you chose to use a different name.  
+And when running in editor, you should pass `true` after the loopMIDI port to tell the script to use the editor logs, else it does not detect if it is connected and/or which camera is live.
