@@ -3,7 +3,9 @@
 This folder contains a standalone midi client that can be used to control which camera goes program, preview etc.
 
 There is also an Bitfocus Companion module available in a different repo:
-https://github.com/Miniontoby/companion-module-vrchat-midi-multicammixer
+https://github.com/bitfocus/companion-module-vrchat-midi-multicammixer
+
+Soon to be published onto the Companion module list. Then you just search for VRChat, find the module and install it.
 
 
 ## Requirements
